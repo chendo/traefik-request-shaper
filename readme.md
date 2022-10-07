@@ -1,6 +1,6 @@
 This repository includes an example plugin, `demo`, for you to use as a reference for developing your own plugins.
 
-[![Build Status](https://github.com/traefik/plugindemo/workflows/Main/badge.svg?branch=master)](https://github.com/traefik/plugindemo/actions)
+[![Build Status](https://github.com/chendo/traefik-request-shaper/workflows/Main/badge.svg?branch=main)](https://github.com/chendo/traefik-request-shaper/actions)
 
 The existing plugins can be browsed into the [Plugin Catalog](https://plugins.traefik.io).
 
