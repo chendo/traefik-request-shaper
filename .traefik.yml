@@ -1,10 +1,10 @@
-displayName: Demo Plugin
+displayName: Request Shaper
 type: middleware
 iconPath: .assets/icon.png
 
-import: github.com/traefik/plugindemo
+import: github.com/chendo/traefik-request-shaper
 
-summary: '[Demo] Add Request Header'
+summary: '[WIP] Delays request processing when above limits'
 
 testData:
   Headers:
