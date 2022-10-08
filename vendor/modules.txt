@@ -20,7 +20,6 @@ github.com/mailgun/minheap
 github.com/mailgun/timetools
 # github.com/mailgun/ttlmap v0.0.0-20170619185759-c1c17f74874f
 ## explicit
-github.com/mailgun/ttlmap
 # github.com/miekg/dns v1.1.49
 ## explicit; go 1.14
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
