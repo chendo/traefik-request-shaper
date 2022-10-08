@@ -1,0 +1,12 @@
+displayName: Request Shaper
+type: middleware
+iconPath: .assets/icon.png
+
+import: github.com/chendo/traefik-request-shaper
+
+summary: '[WIP] Delays request processing when above limits'
+
+testData:
+  Headers:
+    X-Demo: test
+    X-URL: '{{URL}}'

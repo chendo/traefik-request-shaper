@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  traefik:
+    image: traefik:latest
+    ports:
+      - "8080:80"
+    command:
+      - --api.dashboard=true
+      - --api.insecure=true
+      - --experimental.localPlugins.traefik-request-shaper.moduleName=github.com/chendo/traefik-request-shaper
+      - --providers.docker=true
+      - --entrypoints.http.address=:80
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '.:/plugins-local/src/github.com/chendo/traefik-request-shaper'
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
+      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.average=1
+      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.burst=5
+
+  dummy:
+    image: containous/whoami
+
+  website:
+    image: containous/whoami
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.website.rule=PathPrefix(`/website`)
+      - traefik.http.routers.website.middlewares=request-shaper@docker
