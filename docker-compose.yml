@@ -17,9 +17,12 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.traefik.loadbalancer.server.port=8080
-      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.average=1
-      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.burst=5
-
+      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.average=10
+      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.period=1s
+      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.maxDelay=1s
+      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.burst=0
+      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.exceedWait=2s
+      - traefik.http.middlewares.request-shaper.plugin.traefik-request-shaper.ttl=1m
   dummy:
     image: containous/whoami
 
