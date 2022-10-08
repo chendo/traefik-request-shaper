@@ -3,10 +3,10 @@ package traefik_request_shaper
 import (
 	"context"
 	"fmt"
-	"net/http"
-	"net"
-	"time"
 	"log"
+	"net"
+	"net/http"
+	"time"
 
 	"golang.org/x/time/rate"
 )
@@ -17,27 +17,27 @@ const (
 )
 
 type Exclusion struct {
-	SourceRange []string            `json:"sourceRange,omitempty" toml:"sourceRange,omitempty" yaml:"sourceRange,omitempty"`
+	SourceRange []string `json:"sourceRange,omitempty" toml:"sourceRange,omitempty" yaml:"sourceRange,omitempty"`
 }
 
 type Config struct {
-	Average         int64                    `yaml:"average"`
-	Period          string          `yaml:"period"`
-	MaxDelay				string					 `yaml:"maxDelay"`
-	ExceedWait      string					 `yaml:"exceedWait"` 
-	Burst           int64                    `yaml:"burst"`
-	TTL   					string					 `yaml:"ttl"` // how long before we expire entries
-	Exclusion       *Exclusion               `yaml:"exclusion"`
+	Average    int64      `yaml:"average"`
+	Period     string     `yaml:"period"`
+	MaxDelay   string     `yaml:"maxDelay"`
+	ExceedWait string     `yaml:"exceedWait"`
+	Burst      int64      `yaml:"burst"`
+	TTL        string     `yaml:"ttl"` // how long before we expire entries
+	Exclusion  *Exclusion `yaml:"exclusion"`
 }
 
 func CreateConfig() *Config {
 	return &Config{
-		Average: 0,
-		MaxDelay: "5s",
+		Average:    0,
+		MaxDelay:   "5s",
 		ExceedWait: "0s",
-		Period: "1s",
-		TTL: "60s",
-		Burst: 0,
+		Period:     "1s",
+		TTL:        "60s",
+		Burst:      0,
 	}
 }
 
@@ -47,15 +47,15 @@ type requestShaper struct {
 	name  string
 	rate  rate.Limit // reqs/s
 	burst int64
-	
-	maxDelay time.Duration // maxDelay is the maximum duration we're willing let the user to wait before we return an error
+
+	maxDelay   time.Duration // maxDelay is the maximum duration we're willing let the user to wait before we return an error
 	exceedWait time.Duration // how long we make the client wait when they exceed maxDelay
 	// each rate limiter for a given source is stored in the buckets ttlmap.
 	// To keep this ttlmap constrained in size,
 	// each ratelimiter is "garbage collected" when it is considered expired.
 	// It is considered expired after it hasn't been used for ttl seconds.
-	ttl           int
-	next          http.Handler
+	ttl  int
+	next http.Handler
 
 	buckets *TtlMap // actual buckets, keyed by source.
 }
@@ -119,19 +119,17 @@ func New(ctx context.Context, next http.Handler, config *Config, name string) (h
 		}
 	}
 
-
 	return &requestShaper{
-		name:          name,
-		rate:          rate.Limit(rtl),
-		burst:         burst,
-		maxDelay:      maxDelay,
-		exceedWait:    exceedWait,
-		next:          next,
-		buckets:       buckets,
-		ttl:           int(ttl),
+		name:       name,
+		rate:       rate.Limit(rtl),
+		burst:      burst,
+		maxDelay:   maxDelay,
+		exceedWait: exceedWait,
+		next:       next,
+		buckets:    buckets,
+		ttl:        int(ttl),
 	}, nil
 }
-
 
 func (rs *requestShaper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// if rate is 0, perform no shaping

@@ -9,7 +9,6 @@ import (
 	"github.com/mailgun/minheap"
 	"github.com/mailgun/timetools"
 	"golang.org/x/time/rate"
-
 )
 
 type TtlMapOption func(m *TtlMap) error
