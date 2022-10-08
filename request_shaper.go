@@ -3,13 +3,11 @@ package traefik_request_shaper
 import (
 	"context"
 	"fmt"
-	"math"
 	"net/http"
 	"net"
 	"time"
 	"log"
 
-	ptypes "github.com/traefik/paerser/types"
 	"golang.org/x/time/rate"
 )
 
